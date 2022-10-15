@@ -23,7 +23,18 @@ class AttendanceManagement {
 
     void putStudentData(Student student) {
         studentArrayList.add(student);
-        sort(studentArrayList);
+    }
+
+    void viewStudentlist() {
+        if (isEmpty()) {
+            System.out.println("No data available");
+            return;
+        }
+
+        for (Student s : studentArrayList) {
+            System.out.println("Name: " + s.name);
+            System.out.println("Roll: " + s.roll);
+        }
     }
 
     void takeAttendance() {
@@ -50,7 +61,7 @@ class AttendanceManagement {
     }
 
     void viewAttendance() {
-        if (isEmpty()) {
+        if (isEmpty() || studentArrayList.get(0).date == null) {
             System.out.println("No data available");
             return;
         }
@@ -67,9 +78,59 @@ class AttendanceManagement {
         return studentArrayList.size() == 0 ? true : false;
     }
 
-    public static void sort(ArrayList<Student> list) {
+}
 
-        list.sort(Comparator.comparing(o -> o.date));
+public class Main {
+    public static void main(String[] args) {
+
+        AttendanceManagement attendanceManagement = new AttendanceManagement();
+
+        int loop = 1;
+        while (loop != 0) {
+
+            Scanner inputHelper = new Scanner(System.in);
+
+            System.out.println();
+            System.out.println("Choose: ");
+            System.out.println("1. Input student data");
+            System.out.println("2. View student list");
+            System.out.println("3. Take Attendance");
+            System.out.println("4. View Attendance record");
+            System.out.println("5. Exit");
+
+            int choice = inputHelper.nextInt();
+
+            switch (choice) {
+                case 1: {
+                    System.out.println("Enter student name: ");
+                    String name = inputHelper.next();
+                    System.out.println("Enter student roll: ");
+                    int roll = inputHelper.nextInt();
+
+                    attendanceManagement.putStudentData(new Student(name, roll));
+                }
+                break;
+                case 2: {
+                    attendanceManagement.viewStudentlist();
+                }
+                break;
+                case 3: {
+                    attendanceManagement.takeAttendance();
+                }
+                break;
+                case 4: {
+                    attendanceManagement.viewAttendance();
+                }
+                break;
+                case 5:
+                    loop = 0;
+                    break;
+                default:
+                    System.out.println("Invalid input. Please try again");
+
+            }
+
+        }
 
     }
 }
